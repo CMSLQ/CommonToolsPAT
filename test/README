@@ -1,0 +1,44 @@
+
+To checkout the code:
+cvs checkout -d CommonToolsPAT UserCode/Leptoquarks/CommonToolsPAT
+
+Files in the test/ directory:
+
+OptimizationPlot.C :
+
+   Run an optimization on the histograms with number of signal and background events that are generated 
+   by Jeff's code in rootNtuplaAnalyzer/src/baseClass.C
+   In order to generate those histograms, see rootNtuplaAnalyzer/README
+
+   To compile and run OptimizationPlot.C :  
+      root -l -q OptimizationPlot.C+\(100\)  (where 100 in the number of bins in the above histograms)
+
+   The code will tell what is the histogram bin chosen by an optimization based on 2 methods:
+      signif = Ns / sqrt(Ns+Nb);
+      upperLimit = CLA(ILum, ILum*ILum_err_rel, eff, eff*eff_err_rel, Nb, Nb*Nb_err_rel);  -> see below for CLA.C
+   (if you are interested only in Ns / sqrt(Ns+Nb) you can comment the call to CLA to save time)
+
+   You will probably need to make a few changes in OptimizationPlot.C, look for:
+      // User inputs here
+   and
+      // Parameters needed when using the CLA.C method
+
+   The output will go to OptimizationPlot.root
+   Also, a few plots will be created: SignBkg.gif, UpperLimit.gif, Signif.gif
+   To easily see what are the cut values corresponding to the chosen histogram bin, you can look at the file 
+   optimizationCuts.txt that can be created by rootNtuplaAnalyzer/src/baseClass.C (see rootNtuplaAnalyzer/README)
+
+CLA.C :
+
+   Code from Greg Landsberg
+   Bayesian Average 95% CL limit calculator for Poisson statistics
+   Usage: sigma95A = CLA(ilum, slum, eff, seff, bck, sbck, gauss)
+   Inputs: ilum - Nominal integrated luminosity (pb^-1)
+           slum - Absolute error on the integrated luminosity
+           eff  - Nominal value of the efficiency times acceptance
+           seff - Absolute error on the efficiency times acceptance
+           bck  - Nominal value of the background estimate
+           sbck - Absolute error on the background
+           gauss - if true, use Gaussian statistics
+
+
