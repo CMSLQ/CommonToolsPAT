@@ -1,11 +1,8 @@
 
 // root -l -q OptimizationPlot.C+\(100\)
+// where the argument is the number of bins in the optimization histograms
+// See also UserCode/Leptoquarks/CommonToolsPAT/test/README
 
-//   Suppose a macro myscript.C with a function myscript(int i, float x)
-//   you can execute this macro in batch, with eg:
-//   root -b -q "myscript.C(5,3.14)"
-//   If one of the arguments is a string, you must use the form with teh backslash
-//   \"a string\"
 
 #include "CLA.C"
 #include "TROOT.h"
@@ -22,43 +19,16 @@
 
 
 
-// void printCuts(int cuts){
-//   double var[6];
-//   double varMax[6];
-//   double varStep[6];
-//   int NSteps=10;
-//   string varName[6];
-
-//   //Mee                             OPT           >         80              260             1
-//   //sT                              OPT           >         520             700             1
-//   //maxMEtaEles_IDISO_NoOvrl        OPT           <         0.75            3.0             1
-//   //maxMEtaJets_noOvrlpEle          OPT           <         0.6             4.2             1
-//   varName[0]="Mee   "; var[0]=80;   varMax[0]=260;
-//   varName[1]="sT    "; var[1]=520;  varMax[1]=700;
-//   varName[2]="etaEle"; var[2]=0.75; varMax[2]=3.0;
-//   varName[3]="etaJet"; var[3]=0.6;  varMax[3]=4.2;
-
-//   for(int j=0; j<6; j++){
-//     varStep[j]=(varMax[j]-var[j])/(NSteps-1);
-//   }
-//   int count =0;
-//   for(int j=0; j<4; j++){
-//     for(int i=0; i<NSteps; i++){
-//       count++;
-//       var[j] = var[j]+varStep[j];
-//       std::cout << varName[j] << " = " << var[j]<<"\t" << "count = "<< count << std::endl;
-//     }  
-//   }
-// }
-
-
 void OptimizationPlot(int nbins = 100)
 {
 
   //nbins=10000;
   cout << "nbins = " << nbins << endl;
 
-  TFile file1("/home/prumerio/cms/phys/lq/2010/opt/rootNtupleAnalyzerPAT/data/output/analysisClass_eejjSample_plots.root");
+  //////////////////////////////
+  // User inputs here
+  ////////////////////////////// 
+  TFile file1("../../rootNtupleAnalyzerPAT/data/output/analysisClass_eejjSample_plots.root");
   file1.cd();
 
   TH1D Signal;
@@ -74,7 +44,7 @@ void OptimizationPlot(int nbins = 100)
   double eff; // signal efficiency
   double eff_err_rel = 0.15; // Releative error on signal efficiency, dominated by ~10% from JES, ~10% from FastSim vs FullSim
   double Nb_err_rel = 0.30; // Releative error on background, dominated by JES
-  double ILum = 100; // pb-1
+  double ILum = 10; // pb-1
   double ILum_err_rel = 0.10; // Releative error on Integrated Luminosity
   double upperLimit;
   
@@ -100,6 +70,9 @@ void OptimizationPlot(int nbins = 100)
   int bin_fromUpperLimit = -1;
   double Ns;
   double Nb;
+  double NbErr;
+  double NbErrAtMinUpLim;
+  double effAtMinUpLim;
   for (int i=1; i<=nbins; i++){ // Bin = 0 is the underflow
     Ns = Signal.GetBinContent(i);
     Nb = Backgnd.GetBinContent(i);
@@ -117,10 +90,13 @@ void OptimizationPlot(int nbins = 100)
     eff = Ns/Ns_noCut;
     cout<< "Calling CLA for bin i = " << i << endl;
     //cout << ILum <<" "<< ILum*ILum_err_rel <<" "<<  eff <<" "<<  eff*eff_err_rel <<" "<<  Nb <<" "<<  Nb*Nb_err_rel << endl;
-    upperLimit = CLA(ILum, ILum*ILum_err_rel, eff, eff*eff_err_rel, Nb, Nb*Nb_err_rel);
+    NbErr = Nb*Nb_err_rel;
+    upperLimit = CLA(ILum, ILum*ILum_err_rel, eff, eff*eff_err_rel, Nb, NbErr);
     UpperLimit.SetBinContent(i,upperLimit);
     if (upperLimit<minUpperLimit) {
       minUpperLimit = upperLimit;
+      effAtMinUpLim = eff;
+      NbErrAtMinUpLim=NbErr;
       bin_fromUpperLimit = i;  
     }
   }
@@ -132,7 +108,7 @@ void OptimizationPlot(int nbins = 100)
   TCanvas * c2 = new TCanvas;
   Signif.Draw();
   std::cout << "maxSignif: " << maxSignif << "\t" << "Bin_FromSignif - 1 (as bin zero is overflow): " << bin_fromSignif - 1 << std::endl;
-  std::cout << "Significance: " << Signif.GetBinContent(bin_fromSignif) << std::endl;
+  //std::cout << "Significance: " << Signif.GetBinContent(bin_fromSignif) << std::endl;
   std::cout << "Ns = " << Signal.GetBinContent(bin_fromSignif) << "\t" << "Nb = " << Backgnd.GetBinContent(bin_fromSignif) << std::endl;
   c2->Print("Signif.gif","gif");
 
@@ -141,6 +117,7 @@ void OptimizationPlot(int nbins = 100)
   UpperLimit.Draw();
   std::cout << "UpperLimit: " << minUpperLimit << "\t" << "Bin_FromUpperLimit - 1 (as bin zero is overflow): " << bin_fromUpperLimit - 1 << std::endl;
   std::cout << "Ns = " << Signal.GetBinContent(bin_fromUpperLimit) << "\t" << "Nb = " << Backgnd.GetBinContent(bin_fromUpperLimit) << std::endl;
+  std::cout << "effAtMinUpLim = " << effAtMinUpLim << "\t" << "NbErrAtMinUpLim = "<< NbErrAtMinUpLim <<std::endl;
   c3->Print("UpperLimit.gif","gif");
 
   //printCuts(cuts);  
