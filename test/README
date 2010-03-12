@@ -28,6 +28,13 @@ OptimizationPlot.C :
    To easily see what are the cut values corresponding to the chosen histogram bin, you can look at the file 
    optimizationCuts.txt that can be created by rootNtuplaAnalyzer/src/baseClass.C (see rootNtuplaAnalyzer/README)
 
+OptimizationPlot_2dim.C :
+
+   It runs over the root output file of OptimizationPlot.C (named OptimizationPlot.root)
+   and makes a 2d plot of the 2 optimized variables.
+   If more than 2 variables were optimized by OptimizationPlot.C, then some coding is needed
+   in OptimizationPlot_2dim.C
+
 CLA.C :
 
    Code from Greg Landsberg
@@ -41,4 +48,14 @@ CLA.C :
            sbck - Absolute error on the background
            gauss - if true, use Gaussian statistics
 
+makeStackHistoTemplate.py :
 
+   Makes stack plots using histogram from a given root file.
+   It is made to run over the root file 
+   ../../rootNtupleAnalyzerPAT/data/output/analysisClass_template_plots.root
+   that is created by 
+   ../../rootNtupleAnalyzerPAT/scripts/combinePlotsTemplate.py
+   Notice that the histograms are not actually summed by makeStackHistoTemplate.py itself: 
+   you have to sum them yourself when running combinePlotsTemplate.py
+
+ 
