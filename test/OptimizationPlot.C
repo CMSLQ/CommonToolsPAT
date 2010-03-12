@@ -109,14 +109,14 @@ void OptimizationPlot(int nbins = 100)
   Signif.Draw();
   std::cout << "maxSignif: " << maxSignif << "\t" << "Bin_FromSignif - 1 (as bin zero is overflow): " << bin_fromSignif - 1 << std::endl;
   //std::cout << "Significance: " << Signif.GetBinContent(bin_fromSignif) << std::endl;
-  std::cout << "Ns = " << Signal.GetBinContent(bin_fromSignif) << "\t" << "Nb = " << Backgnd.GetBinContent(bin_fromSignif) << std::endl;
+  std::cout << "ILum = " << ILum << "\t Ns = " << Signal.GetBinContent(bin_fromSignif) << "\t Nb = " << Backgnd.GetBinContent(bin_fromSignif) << std::endl;
   c2->Print("Signif.gif","gif");
 
   // print output from upper limit method
   TCanvas * c3 = new TCanvas;
   UpperLimit.Draw();
   std::cout << "UpperLimit: " << minUpperLimit << "\t" << "Bin_FromUpperLimit - 1 (as bin zero is overflow): " << bin_fromUpperLimit - 1 << std::endl;
-  std::cout << "Ns = " << Signal.GetBinContent(bin_fromUpperLimit) << "\t" << "Nb = " << Backgnd.GetBinContent(bin_fromUpperLimit) << std::endl;
+  std::cout << "ILum = " << ILum << "\t Ns = " << Signal.GetBinContent(bin_fromUpperLimit) << "\t Nb = " << Backgnd.GetBinContent(bin_fromUpperLimit) << "\t Ns/sqrt(Ns+Nb) = " << Signal.GetBinContent(bin_fromUpperLimit)/sqrt(Signal.GetBinContent(bin_fromUpperLimit)+Backgnd.GetBinContent(bin_fromUpperLimit))  << std::endl;
   std::cout << "effAtMinUpLim = " << effAtMinUpLim << "\t" << "NbErrAtMinUpLim = "<< NbErrAtMinUpLim <<std::endl;
   c3->Print("UpperLimit.gif","gif");
 
