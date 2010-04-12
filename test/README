@@ -61,7 +61,14 @@ makeStackHistoTemplate.py :
 plotSeveralHistograms.C :
 
    Simple macro to take a number of histograms from a given root file and plot them on the 
-   same canvas.
+   same plot.
+   To use it, open it and edit the "infile", the number of histograms "NN", the array of 
+   names of histograms, and the array of legend keys.
+
+plotSeveralHistogramsSameCanvas.C :
+
+   Simple macro to take a number of histograms from a given root file and plot them on
+   different sub-canvas, using method Divide(), of the same canvas.
    To use it, open it and edit the "infile", the number of histograms "NN", the array of 
    names of histograms, and the array of legend keys.
 
