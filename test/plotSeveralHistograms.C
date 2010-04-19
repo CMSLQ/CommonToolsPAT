@@ -35,7 +35,7 @@
       ah[i]->Rebin(2);
       ah[i]->SetMarkerSize(0.5);
       ah[i]->SetMarkerStyle(20+i);
-      //ah[i]->SetMarkerColor(i+1);
+      ah[i]->SetMarkerColor(i+1);
       ah[i]->SetLineColor(i+1);
       if(i == 0) 
 	{ 
