@@ -26,7 +26,9 @@
   ak[4] =  "sT with 200 < Mee < 300 GeV";
   ak[5] =  "sT with 300 < Mee GeV";
 
-   
+  TString xtitle = "Mee [GeV]";
+
+
   for(int i=0; i<NH; i++)
     { 
       ah[i] = (TH1F) infile->Get(as[i]);
@@ -39,11 +41,12 @@
 	{ 
 	  ah[i]->GetXaxis()->SetRangeUser(0,1500); 
 	  ah[i]->GetYaxis()->SetRangeUser(0.0001,300); 
-	  ah[i]->Draw("hist"); 
+          ah[i]->GetXaxis().SetTitle(xtitle);
+	  ah[i]->Draw("histep"); 
 	}
       else       
 	{ 
-	  ah[i]->Draw("same,hist"); 
+	  ah[i]->Draw("same,histep"); 
 	}
     }
 
@@ -51,8 +54,11 @@
   legend->SetFillColor(kWhite);
   for(int i=0; i<NH; i++)
     {
-      legend->AddEntry(as[i],ak[i],"l");
+      legend->AddEntry(as[i],ak[i],"lp");
     }
   legend->Draw();
+
+  //  c1->Print("plotSeveralHistograms.gif");
+
 
 }
