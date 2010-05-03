@@ -1,0 +1,12 @@
+
+
+exclusion_plot_xs_vs_m_1to100invpb.C :
+
+  it makes xs95CL_vs_m_log.eps
+  To run it:
+  > root -l
+  root [0] .L exclusion_plot_xs_vs_m_1to100invpb.C
+  root [1] makePlots()
+  Info in <TCanvas::Print>: eps file xs95CL_vs_m_log.eps has been created
+
+
