@@ -52,10 +52,10 @@ void makePlots()
  Double_t N_bkg_100[5] = {10.35, 6.37, 2.83, 1.27, 1.27};
  
  // arrays of leptoquark masses
- Double_t m[10] = {250, 300, 400, 500, 600, 650, 700, 800, 900, 1000};
+ Double_t m[12] = {100, 200, 250, 300, 400, 500, 600, 650, 700, 800, 900, 1000};
 
  // array of theoretical cross-sections for different leptoquark masses
- Double_t xsTh[10] = {3.48, 1.21, 0.206, 0.0463, 0.0124, 0.00676, 0.00377, 0.00124, 0.000437, 0.00016};
+ Double_t xsTh[12] = {446, 11.9, 3.48, 1.21, 0.206, 0.0463, 0.0124, 0.00676, 0.00377, 0.00124, 0.000437, 0.00016};
   
  // filename for the final plot (NB: changing the name extension changes the file format)
  string fileName = "xs95CL_vs_m.eps";
@@ -63,16 +63,16 @@ void makePlots()
  // axes labels for the final plot  
  string title = ";m (GeV/c^{2});#beta^{2}#times#sigma (pb)";
 
- TH2F *bg = new TH2F("bg",title.c_str(), 100, 200., 650., 100, 0.01, 50.);
+ TH2F *bg = new TH2F("bg",title.c_str(), 100, 100., 650., 100, 0.01, 500.);
  bg->SetStats(kFALSE);
  bg->SetTitleOffset(1.,"X");
  bg->SetTitleOffset(1.5,"Y");
 
  // region excluded by Tevatron limits
- Double_t x_shaded[5] = {200,256,256,200,200};
- Double_t y_shaded[5] = {0.01,0.01,50,50,0.01};
+ Double_t x_shaded[5] = {200,256,256,100,100};
+ Double_t y_shaded[5] = {0.01,0.01,500,500,0.01};
  Double_t NEW_x_shaded[2] = {299,299};
- Double_t NEW_y_shaded[2] = {0.01,50};
+ Double_t NEW_y_shaded[2] = {0.01,500};
 
  // PDF uncertainty band
  Double_t x_pdf[12] = {250,300,400,500,600,650,650,600,500,400,300,250};
@@ -122,6 +122,7 @@ void makePlots()
  // Double_t MCy_Lumi10[3] = {0.995, 0.660, 0.584}; 
  // Double_t MCy_Lumi100[3] = {0.182, 0.095, 0.071};
  // FullSim MLQ300 and Alpgen Z+Jet
+ Double_t MCy_Lumi03[2]  = {20.04, 17.92}; 
  Double_t MCy_Lumi1[2]  = {6.35, 5.54}; 
  //Double_t MCy_Lumi5[1]  = {1.46}; 
  Double_t MCy_Lumi10[2] = {0.809, 0.640};
@@ -132,7 +133,7 @@ void makePlots()
 //   xsUp[i] = CLA(100, 0, S_eff[i], 0, N_bkg_100[i], 0);
 //  }
 
- TGraph *xsTh_vs_m = new TGraph(size+1, m, xsTh);
+ TGraph *xsTh_vs_m = new TGraph(size+3, m, xsTh);
  xsTh_vs_m->SetLineWidth(2);
  xsTh_vs_m->SetLineColor(kRed);
  xsTh_vs_m->SetFillColor(kYellow);
@@ -158,6 +159,15 @@ void makePlots()
  CRSCxsection->SetLineStyle(9);
  CRSCxsection->SetMarkerSize(.9);
  //CRSCxsection->Draw("CP");
+
+ TGraph *MCxs_Lumi03 = new TGraph(2, MCx, MCy_Lumi03);
+ MCxs_Lumi03->SetMarkerStyle(20);
+ MCxs_Lumi03->SetMarkerColor(kYellow);
+ MCxs_Lumi03->SetLineColor(kYellow);
+ MCxs_Lumi03->SetLineWidth(2);
+ MCxs_Lumi03->SetLineStyle(9);
+ MCxs_Lumi03->SetMarkerSize(1.5);
+ MCxs_Lumi03->Draw("P");
 
  TGraph *MCxs_Lumi1 = new TGraph(2, MCx, MCy_Lumi1);
  MCxs_Lumi1->SetMarkerStyle(20);
@@ -206,6 +216,7 @@ void makePlots()
  legend->AddEntry(xsTh_vs_m,"#beta^{2}#times #sigma_{theory} with PDF unc. band, #beta=1","lf");
  legend->AddEntry(STRLxsection,"Stirling Rescaling - 95% C.L. upper limit (no sys. unc.)","lp");
  //legend->AddEntry(CRSCxsection,"xsec ratio - 7TeV 95% C.L. upper limit (no sys. unc.)","lp");
+ legend->AddEntry(MCxs_Lumi03, "MC @ 7TeV - 95% C.L. upper limit, L=300 nb-1","p");
  legend->AddEntry(MCxs_Lumi1,  "MC @ 7TeV - 95% C.L. upper limit, L=1 pb-1","p");
  legend->AddEntry(MCxs_Lumi10, "MC @ 7TeV - 95% C.L. upper limit, L=10 pb-1","p");
  legend->AddEntry(MCxs_Lumi100,"MC @ 7TeV - 95% C.L. upper limit, L=100 pb-1","p");
