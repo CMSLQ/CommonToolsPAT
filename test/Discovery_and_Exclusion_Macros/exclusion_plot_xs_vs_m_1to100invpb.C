@@ -63,16 +63,16 @@ void makePlots()
  // axes labels for the final plot  
  string title = ";m (GeV/c^{2});#beta^{2}#times#sigma (pb)";
 
- TH2F *bg = new TH2F("bg",title.c_str(), 100, 100., 650., 100, 0.01, 500.);
+ TH2F *bg = new TH2F("bg",title.c_str(), 100, 80., 620., 100, 0.01, 2000.);
  bg->SetStats(kFALSE);
  bg->SetTitleOffset(1.,"X");
  bg->SetTitleOffset(1.5,"Y");
 
  // region excluded by Tevatron limits
- Double_t x_shaded[5] = {200,256,256,100,100};
- Double_t y_shaded[5] = {0.01,0.01,500,500,0.01};
+ Double_t x_shaded[5] = {200,256,256,80,80};
+ Double_t y_shaded[5] = {0.01,0.01,2000,2000,0.01};
  Double_t NEW_x_shaded[2] = {299,299};
- Double_t NEW_y_shaded[2] = {0.01,500};
+ Double_t NEW_y_shaded[2] = {0.01,2000};
 
  // PDF uncertainty band
  Double_t x_pdf[12] = {250,300,400,500,600,650,650,600,500,400,300,250};
@@ -117,16 +117,18 @@ void makePlots()
  Double_t CRSCy[5] = {0.198158,0.123589,0.080478,0.064229,0.0575465};//rescaled with cross section ratio
 
  // FastSim MLQ300 and Pythia Z+Jet rescaled to madgraph
- Double_t MCx[3] = {300,400,500};
+ Double_t MCx[5] = {100,200,300,400,500};
  // Double_t MCy_Lumi1[3]  = {7.81, 5.74, 5.38}; 
  // Double_t MCy_Lumi10[3] = {0.995, 0.660, 0.584}; 
  // Double_t MCy_Lumi100[3] = {0.182, 0.095, 0.071};
  // FullSim MLQ300 and Alpgen Z+Jet
- Double_t MCy_Lumi03[2]  = {20.04, 17.92}; 
- Double_t MCy_Lumi1[2]  = {6.35, 5.54}; 
+ Double_t MCy_Lumi01[5]  = {258.567, 77.4651, 59.247, -1, -1}; // first 2 numbers with 2009 samples and MakerPAT, last 2 with 2010 samples and MakerV2 
+ Double_t MCy_Lumi03[5]  = {94.9783, 27.4179, 20.04, 17.92, -1}; // first 2 numbers with 2009 samples and MakerPAT, last 2 with 2010 samples and MakerV2 
+ // FullSim MLQ300 and Alpgen Z+Jet
+ Double_t MCy_Lumi1[5]  = {34.3874, 9.19702, 6.35, 5.54, -1}; // first 2 numbers with 2009 samples and MakerPAT, last 2 with 2010 samples and MakerV2 
  //Double_t MCy_Lumi5[1]  = {1.46}; 
- Double_t MCy_Lumi10[2] = {0.809, 0.640};
- Double_t MCy_Lumi100[2] = {0.147, 0.092};
+ Double_t MCy_Lumi10[5] = {-1, -1, 0.809, 0.640, -1};
+ Double_t MCy_Lumi100[5] = {-1, -1, 0.147, 0.092, -1};
 
 //  for(Int_t i = 0; i < size; i++){
 //   
@@ -160,7 +162,16 @@ void makePlots()
  CRSCxsection->SetMarkerSize(.9);
  //CRSCxsection->Draw("CP");
 
- TGraph *MCxs_Lumi03 = new TGraph(2, MCx, MCy_Lumi03);
+ TGraph *MCxs_Lumi01 = new TGraph(5, MCx, MCy_Lumi01);
+ MCxs_Lumi01->SetMarkerStyle(20);
+ MCxs_Lumi01->SetMarkerColor(6);
+ MCxs_Lumi01->SetLineColor(kYellow);
+ MCxs_Lumi01->SetLineWidth(2);
+ MCxs_Lumi01->SetLineStyle(9);
+ MCxs_Lumi01->SetMarkerSize(1.5);
+ MCxs_Lumi01->Draw("P");
+
+ TGraph *MCxs_Lumi03 = new TGraph(5, MCx, MCy_Lumi03);
  MCxs_Lumi03->SetMarkerStyle(20);
  MCxs_Lumi03->SetMarkerColor(kYellow);
  MCxs_Lumi03->SetLineColor(kYellow);
@@ -169,7 +180,7 @@ void makePlots()
  MCxs_Lumi03->SetMarkerSize(1.5);
  MCxs_Lumi03->Draw("P");
 
- TGraph *MCxs_Lumi1 = new TGraph(2, MCx, MCy_Lumi1);
+ TGraph *MCxs_Lumi1 = new TGraph(5, MCx, MCy_Lumi1);
  MCxs_Lumi1->SetMarkerStyle(20);
  MCxs_Lumi1->SetMarkerColor(kGreen);
  MCxs_Lumi1->SetLineColor(kGreen);
@@ -187,7 +198,7 @@ void makePlots()
 //  MCxs_Lumi5->SetMarkerSize(1.5);
 //  MCxs_Lumi5->Draw("CP");
 
- TGraph *MCxs_Lumi10 = new TGraph(2, MCx, MCy_Lumi10);
+ TGraph *MCxs_Lumi10 = new TGraph(5, MCx, MCy_Lumi10);
  MCxs_Lumi10->SetMarkerStyle(20);
  MCxs_Lumi10->SetMarkerColor(kBlue);
  MCxs_Lumi10->SetLineColor(kBlue);
@@ -196,7 +207,7 @@ void makePlots()
  MCxs_Lumi10->SetMarkerSize(1.5);
  MCxs_Lumi10->Draw("P");
 
- TGraph *MCxs_Lumi100 = new TGraph(2, MCx, MCy_Lumi100);
+ TGraph *MCxs_Lumi100 = new TGraph(5, MCx, MCy_Lumi100);
  MCxs_Lumi100->SetMarkerStyle(20);
  MCxs_Lumi100->SetMarkerColor(kRed);
  MCxs_Lumi100->SetLineColor(kRed);
@@ -205,7 +216,7 @@ void makePlots()
  MCxs_Lumi100->SetMarkerSize(1.5);
  MCxs_Lumi100->Draw("P");
 
- TLegend *legend = new TLegend(.36,.73,.93,.90);
+ TLegend *legend = new TLegend(.40,.69,.93,.90);
  legend->SetBorderSize(1);
  legend->SetFillColor(0);
  //legend->SetFillStyle(0);
@@ -216,6 +227,7 @@ void makePlots()
  legend->AddEntry(xsTh_vs_m,"#beta^{2}#times #sigma_{theory} with PDF unc. band, #beta=1","lf");
  legend->AddEntry(STRLxsection,"Stirling Rescaling - 95% C.L. upper limit (no sys. unc.)","lp");
  //legend->AddEntry(CRSCxsection,"xsec ratio - 7TeV 95% C.L. upper limit (no sys. unc.)","lp");
+ legend->AddEntry(MCxs_Lumi01, "MC @ 7TeV - 95% C.L. upper limit, L=100 nb-1","p");
  legend->AddEntry(MCxs_Lumi03, "MC @ 7TeV - 95% C.L. upper limit, L=300 nb-1","p");
  legend->AddEntry(MCxs_Lumi1,  "MC @ 7TeV - 95% C.L. upper limit, L=1 pb-1","p");
  legend->AddEntry(MCxs_Lumi10, "MC @ 7TeV - 95% C.L. upper limit, L=10 pb-1","p");
